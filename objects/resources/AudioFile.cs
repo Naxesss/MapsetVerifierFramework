@@ -8,7 +8,7 @@ namespace MapsetVerifierFramework.objects.resources
         private readonly string fileName;
         
         private uint? sampleRate;
-        private bool? hasXingHeader;
+        private XingHeader xingHeader;
 
         private double? averageBitrate;
         private double? lowestBitrate;
@@ -49,16 +49,6 @@ namespace MapsetVerifierFramework.objects.resources
             return averageBitrate.GetValueOrDefault();
         }
 
-        /// <summary> Returns whether the audio file contains a Xing header which is skipped over. </summary>
-        public bool HasXingHeader()
-        {
-            if (hasXingHeader != null)
-                return hasXingHeader.GetValueOrDefault();
-
-            LoadBitrates();
-            return hasXingHeader.GetValueOrDefault();
-        }
-
         /// <summary> Reads through all frames of the mp3 and populates the lowest, highest and average bitrate values. </summary>
         private void LoadBitrates()
         {
@@ -68,16 +58,14 @@ namespace MapsetVerifierFramework.objects.resources
             using (FileStream fileStream = File.OpenRead(fileName))
             {
                 Mp3Frame frame = Mp3Frame.LoadFromStream(fileStream);
+                if (frame == null)
+                    throw new InvalidDataException("Audio contains no frames.");
 
-                // Skip over the Xing header if one exists (would otherwise cause 128 kbps first frame).
-                XingHeader xingHeader = XingHeader.LoadXingHeader(frame);
-                hasXingHeader = xingHeader != null;
-                if (xingHeader != null)
-                    for (int i = 0; i < xingHeader.Frames; ++i)
-                        frame = Mp3Frame.LoadFromStream(fileStream);
-                else
-                    // Even if there isn't a xing header, there's still going to be a header so we'll skip it.
-                    frame = Mp3Frame.LoadFromStream(fileStream);
+                // If not a xing header it'll be null.
+                xingHeader = XingHeader.LoadXingHeader(frame);
+
+                // Skip over the first frame, as it's pretty much always a header, usually 128 kbps.
+                frame = Mp3Frame.LoadFromStream(fileStream);
 
                 while (frame != null)
                 {
