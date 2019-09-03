@@ -1,11 +1,16 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace MapsetVerifierFramework.objects.resources
 {
     public class FileAbstraction : TagLib.File.IFileAbstraction
     {
+        public string error;
+
         public FileAbstraction(string aFilePath)
         {
+            error = null;
+
             ReadStream = aFilePath != null ? new FileStream(aFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite) : null;
             Name = aFilePath;
         }
@@ -26,10 +31,27 @@ namespace MapsetVerifierFramework.objects.resources
 
         public TagLib.File GetTagFile()
         {
-            if (Name == null || ReadStream == null)
+            if (Name == null)
+            {
+                error = "Name cannot be null.";
                 return null;
+            }
 
-            return TagLib.File.Create(this);
+            if (ReadStream == null)
+            {
+                error = "Could not open file for reading.";
+                return null;
+            }
+
+            try
+            {
+                return TagLib.File.Create(this);
+            }
+            catch (Exception exception)
+            {
+                error = exception.Message;
+                return null;
+            }
         }
     }
 }
