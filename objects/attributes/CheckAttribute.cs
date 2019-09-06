@@ -5,7 +5,7 @@ using System.Text;
 namespace MapsetVerifierFramework.objects.attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
-    class CheckAttribute : Attribute
+    public class CheckAttribute : Attribute
     {
         // Used to identify which classes to add to checks in plugins.
     }
