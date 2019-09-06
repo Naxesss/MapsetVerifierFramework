@@ -1,5 +1,6 @@
 ﻿using MapsetParser.objects;
 using MapsetVerifierFramework.objects;
+using MapsetVerifierFramework.objects.attributes;
 using MapsetVerifierFramework.objects.metadata;
 using System;
 using System.Collections.Concurrent;
@@ -116,9 +117,17 @@ namespace MapsetVerifierFramework
                 rootedPath = Path.Combine(Directory.GetCurrentDirectory(), aCheckPath);
 
             Assembly assembly = Assembly.LoadFile(rootedPath);
+            foreach (Type type in assembly.GetExportedTypes())
+            {
+                if (type.GetCustomAttribute(typeof(CheckAttribute)) != null)
+                {
+                    object instance = Activator.CreateInstance(type);
+                    CheckerRegistry.RegisterCheck(instance as Check);
+                }
+            }
 
-            Type mainType = assembly.GetExportedTypes().FirstOrDefault(aType => aType.Name == "Main");
-            mainType.GetMethod("Run").Invoke(null, null);
+            //Type mainType = assembly.GetExportedTypes().FirstOrDefault(aType => aType.Name == "Main");
+            //mainType.GetMethod("Run").Invoke(null, null);
         }
 
         /// <summary> Called whenever the loading of a check is started. </summary>

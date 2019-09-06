@@ -14,6 +14,9 @@ namespace MapsetVerifierFramework
         /// <summary> Adds the given check to the list of checks to process when checking for issues. </summary>
         public static void RegisterCheck(Check aCheck)
         {
+            if (aCheck == null)
+                return;
+
             checks.Add(aCheck);
         }
 
