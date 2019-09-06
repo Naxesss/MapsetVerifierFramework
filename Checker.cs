@@ -125,9 +125,6 @@ namespace MapsetVerifierFramework
                     CheckerRegistry.RegisterCheck(instance as Check);
                 }
             }
-
-            //Type mainType = assembly.GetExportedTypes().FirstOrDefault(aType => aType.Name == "Main");
-            //mainType.GetMethod("Run").Invoke(null, null);
         }
 
         /// <summary> Called whenever the loading of a check is started. </summary>
