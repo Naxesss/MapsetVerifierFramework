@@ -119,8 +119,10 @@ namespace MapsetVerifierFramework
             Assembly assembly = Assembly.LoadFile(rootedPath);
             foreach (Type type in assembly.GetExportedTypes())
             {
-                CustomAttributeData attr = assembly.CustomAttributes.FirstOrDefault(anAttr => anAttr.AttributeType.Name == "CheckAttribute");
-                if (type.GetCustomAttribute(attr.AttributeType) != null)
+                CustomAttributeData attr =
+                    type.CustomAttributes.FirstOrDefault(anAttr =>
+                        anAttr.AttributeType.Name == typeof(CheckAttribute).Name);
+                if (attr != null)
                 {
                     object instance = Activator.CreateInstance(type);
                     CheckerRegistry.RegisterCheck(instance as Check);
