@@ -23,14 +23,14 @@ namespace MapsetVerifierFramework.objects.resources
             }
         }
 
-        private static int CreateStream(string aFileName)
+        private static int CreateStream(string aFilePath)
         {
             Initialize();
 
-            int stream = Bass.CreateStream(aFileName, 0, 0, BassFlags.Decode);
+            int stream = Bass.CreateStream(aFilePath, 0, 0, BassFlags.Decode);
             if (stream == 0)
                 throw new BadImageFormatException(
-                    $"Could not create stream of \"{aFileName}\", error \"{Bass.LastError}\".");
+                    $"Could not create stream of \"{aFilePath}\", error \"{Bass.LastError}\".");
 
             return stream;
         }
@@ -40,14 +40,14 @@ namespace MapsetVerifierFramework.objects.resources
             Bass.StreamFree(aStream);
         }
 
-        /// <summary> Returns the format of the audio file (e.g. mp3, wav, etc). </summary>
-        public static ChannelType GetFormat(string aFileName)
+        /// <summary> Returns the format of the audio file (e.g. mp3, wav, etc), given the full path. </summary>
+        public static ChannelType GetFormat(string aFilePath)
         {
             // Implements a queue to prevent race conditions since Bass is a static library.
             // Also prevents deadlocks through using new object() rather than the file name itself.
-            lock (locks.GetOrAdd(aFileName, new object()))
+            lock (locks.GetOrAdd(aFilePath, new object()))
             {
-                int stream = CreateStream(aFileName);
+                int stream = CreateStream(aFilePath);
                 Bass.ChannelGetInfo(stream, out ChannelInfo channelInfo);
 
                 FreeStream(stream);
@@ -55,12 +55,12 @@ namespace MapsetVerifierFramework.objects.resources
             }
         }
 
-        /// <summary> Returns the channel amount (1 = mono, 2 = stereo, etc). </summary>
-        public static int GetChannels(string aFileName)
+        /// <summary> Returns the channel amount (1 = mono, 2 = stereo, etc), given the full path. </summary>
+        public static int GetChannels(string aFilePath)
         {
-            lock (locks.GetOrAdd(aFileName, new object()))
+            lock (locks.GetOrAdd(aFilePath, new object()))
             {
-                int stream = CreateStream(aFileName);
+                int stream = CreateStream(aFilePath);
                 Bass.ChannelGetInfo(stream, out ChannelInfo channelInfo);
 
                 FreeStream(stream);
@@ -68,12 +68,12 @@ namespace MapsetVerifierFramework.objects.resources
             }
         }
 
-        /// <summary> Returns the audio duration in ms. </summary>
-        public static double GetDuration(string aFileName)
+        /// <summary> Returns the audio duration in ms, given the full path. </summary>
+        public static double GetDuration(string aFilePath)
         {
-            lock (locks.GetOrAdd(aFileName, new object()))
+            lock (locks.GetOrAdd(aFilePath, new object()))
             {
-                int    stream  = CreateStream(aFileName);
+                int    stream  = CreateStream(aFilePath);
                 long   length  = Bass.ChannelGetLength(stream);
                 double seconds = Bass.ChannelBytes2Seconds(stream, length);
 
@@ -82,12 +82,13 @@ namespace MapsetVerifierFramework.objects.resources
             }
         }
 
-        /// <summary> Returns the normalized audio peaks (split by channel) for each ms (List = time, array = channel). </summary>
-        public static List<float[]> GetPeaks(string aFileName)
+        /// <summary> Returns the normalized audio peaks (split by channel) for each ms (List = time, array = channel), 
+        /// given the full path. </summary>
+        public static List<float[]> GetPeaks(string aFilePath)
         {
-            lock (locks.GetOrAdd(aFileName, new object()))
+            lock (locks.GetOrAdd(aFilePath, new object()))
             {
-                int    stream  = CreateStream(aFileName);
+                int    stream  = CreateStream(aFilePath);
                 long   length  = Bass.ChannelGetLength(stream);
                 double seconds = Bass.ChannelBytes2Seconds(stream, length);
 
@@ -101,7 +102,7 @@ namespace MapsetVerifierFramework.objects.resources
                     bool success = Bass.ChannelGetLevel(stream, levels, 0.001f, 0);
                     if (!success)
                         throw new BadImageFormatException(
-                            "Could not parse audio peak of \"" + aFileName + "\" at " + i * 1000 + " ms.");
+                            "Could not parse audio peak of \"" + aFilePath + "\" at " + i * 1000 + " ms.");
 
                     peaks.Add(levels);
                 }
