@@ -43,15 +43,7 @@ namespace MapsetVerifierFramework.objects.resources
                 return null;
             }
 
-            try
-            {
-                return TagLib.File.Create(this);
-            }
-            catch (Exception exception)
-            {
-                error = exception.Message;
-                return null;
-            }
+            return TagLib.File.Create(this);
         }
     }
 }
