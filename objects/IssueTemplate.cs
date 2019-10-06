@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MapsetVerifierFramework.objects
@@ -67,8 +68,12 @@ namespace MapsetVerifierFramework.objects
                     "(according to the default argument amount), but was given the unexpected argument amount " + anArguments.Length + ". " +
                     "Make sure that, when creating a new issue, you supply it with the correct amount of arguments for its template.");
 
-            return String.Format(format, anArguments)
-                .Replace("  ", " "); // allows for "timestamp - " in "{0} /.../" without double spacing
+            // Trimming format and args separately allows for "timestamp - " in "{0} /.../" without double spacing.
+            // This way we still maintain any double space causing things like incorrect filenames within arguments.
+            return
+                string.Format(
+                    format.Trim(),
+                    anArguments.Select(anArg => anArg.ToString().Trim()));
         }
 
         /// <summary> Returns the default arguments for this template. </summary>
