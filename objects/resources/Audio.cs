@@ -101,8 +101,13 @@ namespace MapsetVerifierFramework.objects.resources
 
                     bool success = Bass.ChannelGetLevel(stream, levels, 0.001f, 0);
                     if (!success)
-                        throw new BadImageFormatException(
-                            "Could not parse audio peak of \"" + aFilePath + "\" at " + i * 1000 + " ms.");
+                    {
+                        Errors error = Bass.LastError;
+                        if(error != Errors.Ended)
+                            throw new BadImageFormatException(
+                                "Could not parse audio peak of \"" + aFilePath + "\" at " + i * 1000 + " ms.");
+                        break;
+                    }
 
                     peaks.Add(levels);
                 }
