@@ -73,7 +73,7 @@ namespace MapsetVerifierFramework.objects
             return
                 string.Format(
                     format.Trim(),
-                    anArguments.Select(anArg => anArg.ToString().Trim()));
+                    anArguments.Select(anArg => anArg.ToString().Trim()).ToArray());
         }
 
         /// <summary> Returns the default arguments for this template. </summary>
