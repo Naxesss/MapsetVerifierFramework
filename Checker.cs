@@ -17,7 +17,7 @@ namespace MapsetVerifierFramework
     {
         public static string RelativeDLLDirectory { get; set; } = null;
 
-        /// <summary> Returns a list of issues, which have traceable check origins, in the given beatmap set. </summary>
+        /// <summary> Returns a list of issues sorted by level, in the given beatmap set. </summary>
         public static List<Issue> GetBeatmapSetIssues(BeatmapSet aBeatmapSet)
         {
             if(!CheckerRegistry.GetChecks().Any())
@@ -52,7 +52,7 @@ namespace MapsetVerifierFramework
                         issueBag.Add(issue.WithOrigin(aBeatmapSetCheck));
             });
 
-            return issueBag.ToList();
+            return issueBag.OrderBy(anIssue => anIssue.level).ToList();
         }
 
         private static void TryGetIssuesParallel<T>(IEnumerable<T> aChecks, Action<T> anAction) where T : Check
