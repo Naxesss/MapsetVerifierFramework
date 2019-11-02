@@ -5,7 +5,7 @@
     </assembly>
     <members>
         <member name="M:MapsetVerifierFramework.Checker.GetBeatmapSetIssues(MapsetParser.objects.BeatmapSet)">
-            <summary> Returns a list of issues, which have traceable check origins, in the given beatmap set. </summary>
+            <summary> Returns a list of issues sorted by level, in the given beatmap set. </summary>
         </member>
         <member name="M:MapsetVerifierFramework.Checker.LoadCheckDLLs">
             <summary> Loads the .dll files from the current directory + relative path ("/checks" by default). </summary>
