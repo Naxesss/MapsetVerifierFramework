@@ -8,7 +8,6 @@ namespace MapsetVerifierFramework.objects.resources
         private readonly string fileName;
         
         private uint? sampleRate;
-        private XingHeader xingHeader;
 
         private double? averageBitrate;
         private double? lowestBitrate;
@@ -60,9 +59,6 @@ namespace MapsetVerifierFramework.objects.resources
                 Mp3Frame frame = Mp3Frame.LoadFromStream(fileStream);
                 if (frame == null)
                     throw new InvalidDataException("Audio contains no frames.");
-
-                // If not a xing header it'll be null.
-                xingHeader = XingHeader.LoadXingHeader(frame);
 
                 // Skip over the first frame, as it's pretty much always a header, usually 128 kbps.
                 frame = Mp3Frame.LoadFromStream(fileStream);
