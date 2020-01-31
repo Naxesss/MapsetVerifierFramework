@@ -59,7 +59,8 @@ namespace MapsetVerifierFramework
         {
             Parallel.ForEach(aChecks, aCheck =>
             {
-                Track checkTrack = new Track("Checking for " + aCheck.GetMetadata().Message + "...");
+                // Will end up "..." due to message always including a period at the end.
+                Track checkTrack = new Track($"Checking for {aCheck.GetMetadata().Message}..");
 
                 try
                 {
