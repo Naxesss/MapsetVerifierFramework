@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using ManagedBass;
 
 namespace MapsetVerifierFramework.objects.resources
@@ -30,7 +31,7 @@ namespace MapsetVerifierFramework.objects.resources
             int stream = Bass.CreateStream(aFilePath, 0, 0, BassFlags.Decode);
             if (stream == 0)
                 throw new BadImageFormatException(
-                    $"Could not create stream of \"{aFilePath}\", error \"{Bass.LastError}\".");
+                    $"Could not create stream of \"{aFilePath.Split('\\', '/').Last()}\", error \"{Bass.LastError}\".");
 
             return stream;
         }
@@ -105,7 +106,7 @@ namespace MapsetVerifierFramework.objects.resources
                         Errors error = Bass.LastError;
                         if(error != Errors.Ended)
                             throw new BadImageFormatException(
-                                "Could not parse audio peak of \"" + aFilePath + "\" at " + i * 1000 + " ms.");
+                                $"Could not parse audio peak of \"{aFilePath.Split('\\', '/').Last()}\" at " + i * 1000 + " ms.");
                         break;
                     }
 
