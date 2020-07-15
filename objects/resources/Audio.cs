@@ -83,6 +83,20 @@ namespace MapsetVerifierFramework.objects.resources
             }
         }
 
+        /// <summary> Returns the average audio bitrate in kbps, given the full path.
+        /// Seems to have an error margin of about ~0.1 kbps. </summary>
+        public static double GetBitrate(string aFilePath)
+        {
+            lock (locks.GetOrAdd(aFilePath, new object()))
+            {
+                int stream = CreateStream(aFilePath);
+                double bitrate = Bass.ChannelGetAttribute(stream, ChannelAttribute.Bitrate);
+
+                FreeStream(stream);
+                return bitrate;
+            }
+        }
+
         /// <summary> Returns the normalized audio peaks (split by channel) for each ms (List = time, array = channel), 
         /// given the full path. </summary>
         public static List<float[]> GetPeaks(string aFilePath)
