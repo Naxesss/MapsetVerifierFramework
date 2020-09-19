@@ -6,7 +6,7 @@ using ManagedBass;
 
 namespace MapsetVerifierFramework.objects.resources
 {
-    public static class Audio
+    public static class AudioBASS
     {
         private static readonly ConcurrentDictionary<string, object> locks = new ConcurrentDictionary<string, object>();
         private static bool isInitialized = false;
