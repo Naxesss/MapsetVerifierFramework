@@ -112,19 +112,20 @@
             <summary> Can be initialized like this: <para />
             new CheckMetadata() { Category = "", Message = "", Author = "", ...  }</summary>
         </member>
-        <member name="M:MapsetVerifierFramework.objects.resources.Audio.GetFormat(System.String)">
+        <member name="M:MapsetVerifierFramework.objects.resources.AudioBASS.GetFormat(System.String)">
             <summary> Returns the format of the audio file (e.g. mp3, wav, etc), given the full path. </summary>
         </member>
-        <member name="M:MapsetVerifierFramework.objects.resources.Audio.GetChannels(System.String)">
+        <member name="M:MapsetVerifierFramework.objects.resources.AudioBASS.GetChannels(System.String)">
             <summary> Returns the channel amount (1 = mono, 2 = stereo, etc), given the full path. </summary>
         </member>
-        <member name="M:MapsetVerifierFramework.objects.resources.Audio.GetDuration(System.String)">
+        <member name="M:MapsetVerifierFramework.objects.resources.AudioBASS.GetDuration(System.String)">
             <summary> Returns the audio duration in ms, given the full path. </summary>
         </member>
-        <member name="M:MapsetVerifierFramework.objects.resources.Audio.GetBitrate(System.String)">
-            <summary> Returns the audio bitrate in kbps, given the full path. </summary>
+        <member name="M:MapsetVerifierFramework.objects.resources.AudioBASS.GetBitrate(System.String)">
+            <summary> Returns the average audio bitrate in kbps, given the full path.
+            Seems to have an error margin of about ~0.1 kbps. </summary>
         </member>
-        <member name="M:MapsetVerifierFramework.objects.resources.Audio.GetPeaks(System.String)">
+        <member name="M:MapsetVerifierFramework.objects.resources.AudioBASS.GetPeaks(System.String)">
             <summary> Returns the normalized audio peaks (split by channel) for each ms (List = time, array = channel), 
             given the full path. </summary>
         </member>
