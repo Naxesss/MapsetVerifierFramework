@@ -27,7 +27,7 @@ namespace MapsetVerifierFramework
             
             TryGetIssuesParallel(CheckerRegistry.GetGeneralChecks(), aGeneralCheck =>
             {
-                foreach (Issue issue in aGeneralCheck.GetIssues(aBeatmapSet).OrderByDescending(anIssue => anIssue.level))
+                foreach (Issue issue in aGeneralCheck.GetIssues(aBeatmapSet).OrderBy(anIssue => anIssue.level).Reverse())
                     issueBag.Add(issue.WithOrigin(aGeneralCheck));
             });
 
@@ -38,7 +38,7 @@ namespace MapsetVerifierFramework
                 TryGetIssuesParallel(CheckerRegistry.GetBeatmapChecks(), aBeatmapCheck =>
                 {
                     if (((BeatmapCheckMetadata)aBeatmapCheck.GetMetadata()).Modes.Contains(aBeatmap.generalSettings.mode))
-                        foreach (Issue issue in aBeatmapCheck.GetIssues(aBeatmap).OrderByDescending(anIssue => anIssue.level))
+                        foreach (Issue issue in aBeatmapCheck.GetIssues(aBeatmap).OrderBy(anIssue => anIssue.level).Reverse())
                             issueBag.Add(issue.WithOrigin(aBeatmapCheck));
                 });
 
@@ -48,7 +48,7 @@ namespace MapsetVerifierFramework
             TryGetIssuesParallel(CheckerRegistry.GetBeatmapSetChecks(), aBeatmapSetCheck =>
             {
                 if (aBeatmapSet.beatmaps.Any(aBeatmap => ((BeatmapCheckMetadata)aBeatmapSetCheck.GetMetadata()).Modes.Contains(aBeatmap.generalSettings.mode)))
-                    foreach (Issue issue in aBeatmapSetCheck.GetIssues(aBeatmapSet).OrderByDescending(anIssue => anIssue.level))
+                    foreach (Issue issue in aBeatmapSetCheck.GetIssues(aBeatmapSet).OrderBy(anIssue => anIssue.level).Reverse())
                         issueBag.Add(issue.WithOrigin(aBeatmapSetCheck));
             });
 
