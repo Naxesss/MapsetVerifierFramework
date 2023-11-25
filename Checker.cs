@@ -117,7 +117,7 @@ namespace MapsetVerifierFramework
             if (!Path.IsPathRooted(aCheckPath))
                 rootedPath = Path.Combine(Directory.GetCurrentDirectory(), aCheckPath);
 
-            Assembly assembly = Assembly.LoadFile(rootedPath);
+            Assembly assembly = Assembly.LoadFrom(rootedPath);
             foreach (Type type in assembly.GetExportedTypes())
             {
                 CustomAttributeData attr =
