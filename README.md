@@ -1,4 +1,6 @@
-﻿# Mapset Verifier Framework
+# DEPRECATED / Now part of [MapsetVerifier](https://github.com/Naxesss/MapsetVerifier)
+ 
+# Mapset Verifier Framework
 This is a framework for Mapset Verifier made in C# .NET Core, containing everything needed to load and run checks on beatmapsets, such as the `GetBeatmapSetIssues` and `LoadCheckDLLs` functions, along with the `IssueTemplate`, `IssueLevel`, `Check`, `CheckMetadata`, and `CheckRegistry` classes. There are also loading hooks for progress tracking included.
 
 This is mainly for developing applications supporting check plugins like bots, web pages, or desktop apps, but is also used in check plugins to form a common denominator between plugin and application.
